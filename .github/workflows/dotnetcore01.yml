@@ -27,6 +27,8 @@ jobs:
     steps:
     - name: Deploy to azure webapps
       uses: azure/appservice-actions/webapp@master
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       with:
         app-name: my dotnet web app
         publish-profile: ${{ secrets.dotnetcore01_4A5E }}

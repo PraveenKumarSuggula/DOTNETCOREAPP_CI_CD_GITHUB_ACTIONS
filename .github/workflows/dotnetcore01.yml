@@ -1,34 +1,40 @@
-name: Build and deploy .NET Core application to Web App dotnetcore01
+name: Build and deploy .NET Core application to Web App DemoTest001
+
 on:
   push:
     branches:
-    - master
+      - master
+
 env:
-  AZURE_WEBAPP_NAME: dotnetcore01
+  AZURE_WEBAPP_NAME: DemoTest001
   AZURE_WEBAPP_PACKAGE_PATH: DOTNETCOREAPP_CI_CD_GITHUB_ACTIONS\published
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 6.0.x
   WORKING_DIRECTORY: DOTNETCOREAPP_CI_CD_GITHUB_ACTIONS
+
 jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 2.2.108
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
-    
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 2.2.108
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
   deploy:
     runs-on: windows-latest
     needs: build
     steps:
-    - name: Deploy to azure webapps
-      uses: azure/appservice-actions/webapp@master
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-      with:
-        app-name: my dotnet web app
-        publish-profile: ${{ secrets.dotnetcore01_4A5E }}
+      - name: Deploy to Azure Web App
+        uses: azure/appservice-actions/webapp@master
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        with:
+          app-name: DemoTest001
+          publish-profile: ${{ secrets.dotnetcore01_4A5E }}

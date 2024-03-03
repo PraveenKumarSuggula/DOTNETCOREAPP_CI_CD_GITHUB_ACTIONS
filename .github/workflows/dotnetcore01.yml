@@ -21,3 +21,12 @@ jobs:
     - name: Build with dotnet
       run: dotnet build --configuration Release
     
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Deploy to azure webapps
+      uses: azure/appservice-actions/webapp@master
+      with:
+        app-name: my dotnet web app
+        publish-profile: ${{ secrets.dotnetcore01_4A5E }}
